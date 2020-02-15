@@ -5,6 +5,9 @@
 
     use TelegramClientManager\Abstracts\SearchMethods\TelegramClientSearchMethod;
     use TelegramClientManager\Exceptions\DatabaseException;
+    use TelegramClientManager\Objects\TelegramClient\Chat;
+    use TelegramClientManager\Objects\TelegramClient\User;
+    use ZiProto\ZiProto;
 
     /**
      * Class TelegramClientManager
