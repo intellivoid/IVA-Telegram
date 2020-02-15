@@ -9,10 +9,12 @@
 
     $LocalDirectory = __DIR__ . DIRECTORY_SEPARATOR;
 
+    include_once(__DIR__ . DIRECTORY_SEPARATOR . 'Abstracts' . DIRECTORY_SEPARATOR . 'SearchMethods' . DIRECTORY_SEPARATOR . 'TelegramClientSearchMethod.php');
     include_once(__DIR__ . DIRECTORY_SEPARATOR . 'Abstracts' . DIRECTORY_SEPARATOR . 'TelegramChatType.php');
 
     include_once(__DIR__ . DIRECTORY_SEPARATOR . 'Exceptions' . DIRECTORY_SEPARATOR . 'DatabaseException.php');
     include_once(__DIR__ . DIRECTORY_SEPARATOR . 'Exceptions' . DIRECTORY_SEPARATOR . 'InvalidSearchMethod.php');
+    include_once(__DIR__ . DIRECTORY_SEPARATOR . 'Exceptions' . DIRECTORY_SEPARATOR . 'TelegramClientNotFoundException.php');
 
     include_once(__DIR__ . DIRECTORY_SEPARATOR . 'Managers' . DIRECTORY_SEPARATOR . 'TelegramClientManager.php');
 
@@ -20,6 +22,11 @@
     include_once(__DIR__ . DIRECTORY_SEPARATOR. 'Objects' . DIRECTORY_SEPARATOR . 'TelegramClient' . DIRECTORY_SEPARATOR . 'SessionData.php');
     include_once(__DIR__ . DIRECTORY_SEPARATOR. 'Objects' . DIRECTORY_SEPARATOR . 'TelegramClient' . DIRECTORY_SEPARATOR . 'User.php');
     include_once(__DIR__ . DIRECTORY_SEPARATOR. 'Objects' . DIRECTORY_SEPARATOR . 'TelegramClient.php');
+
+    if(class_exists('ZiProto\ZiProto') == false)
+    {
+        include_once($LocalDirectory . 'ZiProto' . DIRECTORY_SEPARATOR . 'ZiProto.php');
+    }
 
     if(class_exists('acm\acm') == false)
     {

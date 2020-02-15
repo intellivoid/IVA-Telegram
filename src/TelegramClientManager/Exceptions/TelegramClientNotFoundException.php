@@ -2,7 +2,7 @@
 
 
     namespace TelegramClientManager\Exceptions;
-    
+
     use Exception;
 
     /**
