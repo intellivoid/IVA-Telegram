@@ -6,6 +6,7 @@
     use msqg\QueryBuilder;
     use TelegramClientManager\Abstracts\SearchMethods\TelegramClientSearchMethod;
     use TelegramClientManager\Exceptions\DatabaseException;
+    use TelegramClientManager\Exceptions\InvalidSearchMethod;
     use TelegramClientManager\Exceptions\TelegramClientNotFoundException;
     use TelegramClientManager\Objects\TelegramClient;
     use TelegramClientManager\Objects\TelegramClient\Chat;
@@ -40,6 +41,8 @@
          * @param User $user
          * @return TelegramClient
          * @throws DatabaseException
+         * @throws InvalidSearchMethod
+         * @throws TelegramClientNotFoundException
          */
         public function registerClient(Chat $chat, User $user): TelegramClient
         {
@@ -101,5 +104,68 @@
             }
 
             return $this->getClient(TelegramClientSearchMethod::byPublicId, $PublicID);
+        }
+
+        /**
+         * Gets an existing Telegram Client from the database
+         *
+         * @param string $search_method
+         * @param string $value
+         * @return TelegramClient
+         * @throws DatabaseException
+         * @throws InvalidSearchMethod
+         * @throws TelegramClientNotFoundException
+         */
+        public function getClient(string $search_method, string $value): TelegramClient
+        {
+            switch($search_method)
+            {
+                case TelegramClientSearchMethod::byId:
+                    $search_method = $this->telegramClientManager->database->real_escape_string($search_method);
+                    $value = (int)$value;
+                    break;
+
+                case TelegramClientSearchMethod::byPublicId:
+                    $search_method = $this->telegramClientManager->database->real_escape_string($search_method);
+                    $value = $this->telegramClientManager->database->real_escape_string($value);;
+                    break;
+
+                default:
+                    throw new InvalidSearchMethod();
+            }
+
+            $Query = QueryBuilder::select('telegram_clients', [
+                'id',
+                'public_id',
+                'available',
+                'account_id',
+                'user',
+                'chat',
+                'session_data',
+                'chat_id',
+                'user_id',
+                'last_activity',
+                'created'
+            ], $search_method, $value);
+
+            $QueryResults = $this->telegramClientManager->database->query($Query);
+
+            if($QueryResults == false)
+            {
+                throw new DatabaseException($Query, $this->telegramClientManager->database->error);
+            }
+            else
+            {
+                if($QueryResults->num_rows !== 1)
+                {
+                    throw new TelegramClientNotFoundException();
+                }
+
+                $Row = $QueryResults->fetch_array(MYSQLI_ASSOC);
+                $Row['user'] = ZiProto::decode($Row['user']);
+                $Row['chat'] = ZiProto::decode($Row['chat']);
+                $Row['session_data'] = ZiProto::decode($Row['session_data']);
+                return TelegramClient::fromArray($Row);
+            }
         }
     }
