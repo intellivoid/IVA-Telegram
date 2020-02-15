@@ -3,10 +3,14 @@
 
     namespace TelegramClientManager\Managers;
 
+    use msqg\QueryBuilder;
     use TelegramClientManager\Abstracts\SearchMethods\TelegramClientSearchMethod;
     use TelegramClientManager\Exceptions\DatabaseException;
+    use TelegramClientManager\Exceptions\TelegramClientNotFoundException;
+    use TelegramClientManager\Objects\TelegramClient;
     use TelegramClientManager\Objects\TelegramClient\Chat;
     use TelegramClientManager\Objects\TelegramClient\User;
+    use TelegramClientManager\Utilities\Hashing;
     use ZiProto\ZiProto;
 
     /**
@@ -29,6 +33,14 @@
             $this->telegramClientManager = $telegramClientManager;
         }
 
+        /**
+         * Registers a new Telegram Client into the database
+         *
+         * @param Chat $chat
+         * @param User $user
+         * @return TelegramClient
+         * @throws DatabaseException
+         */
         public function registerClient(Chat $chat, User $user): TelegramClient
         {
             $CurrentTime = (int)time();
@@ -53,18 +65,18 @@
                 unset($e);
             }
 
-            $PublicID = $this->intellivoidAccounts->database->real_escape_string($PublicID);
+            $PublicID = $this->telegramClientManager->database->real_escape_string($PublicID);
             $Available = (int)true;
             $AccountID = 0;
             $User = ZiProto::encode($user->toArray());
-            $User = $this->intellivoidAccounts->database->real_escape_string($User);
+            $User = $this->telegramClientManager->database->real_escape_string($User);
             $Chat = ZiProto::encode($chat->toArray());
-            $Chat = $this->intellivoidAccounts->database->real_escape_string($Chat);
+            $Chat = $this->telegramClientManager->database->real_escape_string($Chat);
             $SessionData = new TelegramClient\SessionData();
             $SessionData = ZiProto::encode($SessionData->toArray());
-            $SessionData = $this->intellivoidAccounts->database->real_escape_string($SessionData);
-            $ChatID = $this->intellivoidAccounts->database->real_escape_string($chat->ID);
-            $UserID = $this->intellivoidAccounts->database->real_escape_string($user->ID);
+            $SessionData = $this->telegramClientManager->database->real_escape_string($SessionData);
+            $ChatID = $this->telegramClientManager->database->real_escape_string($chat->ID);
+            $UserID = $this->telegramClientManager->database->real_escape_string($user->ID);
             $LastActivity = $CurrentTime;
             $Created = $CurrentTime;
 
