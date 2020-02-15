@@ -23,13 +23,5 @@
     $DatabaseSchema->setDefinition('Name', 'intellivoid');
     $acm->defineSchema('Database', $DatabaseSchema);
 
-    // Telegram Service Schema
-    $TelegramSchema = new Schema();
-    $TelegramSchema->setDefinition('TgBotName', 'IntellivoidBot');
-    $TelegramSchema->setDefinition('TgBotToken', '<BOT TOKEN>');
-    $TelegramSchema->setDefinition('TgBotEnabled', 'true');
-    $TelegramSchema->setDefinition('TgBotHook', 'http://localhost');
-    $acm->defineSchema('TelegramService', $TelegramSchema);
-
     // If auto-loaded via CLI, Process any arguments passed to the main execution point
     $acm->processCommandLine();
