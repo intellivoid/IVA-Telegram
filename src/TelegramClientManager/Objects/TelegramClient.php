@@ -2,7 +2,7 @@
 
 
     namespace TelegramClientManager\Objects;
-    
+
     use TelegramClientManager\Objects\TelegramClient\Chat;
     use TelegramClientManager\Objects\TelegramClient\SessionData;
     use TelegramClientManager\Objects\TelegramClient\User;
