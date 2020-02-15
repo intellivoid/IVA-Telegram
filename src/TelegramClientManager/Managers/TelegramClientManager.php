@@ -168,4 +168,67 @@
                 return TelegramClient::fromArray($Row);
             }
         }
+
+        /**
+         * Gets all associated clients with a specific search method
+         *
+         * @param string $search_method
+         * @param string $value
+         * @return array
+         * @throws DatabaseException
+         * @throws InvalidSearchMethod
+         */
+        public function getAssociatedClients(string $search_method, string $value): array
+        {
+            switch($search_method)
+            {
+                case TelegramClientSearchMethod::byChatId:
+                case TelegramClientSearchMethod::byUserId:
+                    $search_method = $this->telegramClientManager->database->real_escape_string($search_method);
+                    $value = $this->telegramClientManager->database->real_escape_string($value);;
+                    break;
+
+                case TelegramClientSearchMethod::byAccountId:
+                    $search_method = $this->telegramClientManager->database->real_escape_string($search_method);
+                    $value = (int)$value;;
+                    break;
+
+                default:
+                    throw new InvalidSearchMethod();
+            }
+
+            $Query = QueryBuilder::select('telegram_clients', [
+                'id',
+                'public_id',
+                'available',
+                'account_id',
+                'user',
+                'chat',
+                'session_data',
+                'chat_id',
+                'user_id',
+                'last_activity',
+                'created'
+            ], $search_method, $value);
+
+            $QueryResults = $this->telegramClientManager->database->query($Query);
+            if($QueryResults == false)
+            {
+                throw new DatabaseException($this->telegramClientManager->database->error, $Query);
+            }
+            else
+            {
+                $ResultsArray = [];
+
+                while($Row = $QueryResults->fetch_assoc())
+                {
+                    $Row['user'] = ZiProto::decode($Row['user']);
+                    $Row['chat'] = ZiProto::decode($Row['chat']);
+                    $Row['session_data'] = ZiProto::decode($Row['session_data']);
+                    $ResultsArray[] = TelegramClient::fromArray($Row);
+                }
+
+                return $ResultsArray;
+            }
+        }
     }
