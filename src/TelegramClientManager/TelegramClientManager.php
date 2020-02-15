@@ -69,7 +69,6 @@
         {
             $this->acm = new acm(__DIR__, 'Telegram Client Manager');
             $this->DatabaseConfiguration = $this->acm->getConfiguration('Database');
-            $this->TelegramConfiguration = $this->acm->getConfiguration('TelegramService');
 
             $this->database = new mysqli(
                 $this->DatabaseConfiguration['Host'],
