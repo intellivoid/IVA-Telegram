@@ -11,6 +11,8 @@
 
     include_once(__DIR__ . DIRECTORY_SEPARATOR . 'Abstracts' . DIRECTORY_SEPARATOR . 'TelegramChatType.php');
 
+    include_once(__DIR__ . DIRECTORY_SEPARATOR . 'Managers' . DIRECTORY_SEPARATOR . 'TelegramClientManager.php');
+
     include_once(__DIR__ . DIRECTORY_SEPARATOR. 'Objects' . DIRECTORY_SEPARATOR . 'TelegramClient' . DIRECTORY_SEPARATOR . 'Chat.php');
     include_once(__DIR__ . DIRECTORY_SEPARATOR. 'Objects' . DIRECTORY_SEPARATOR . 'TelegramClient' . DIRECTORY_SEPARATOR . 'SessionData.php');
     include_once(__DIR__ . DIRECTORY_SEPARATOR. 'Objects' . DIRECTORY_SEPARATOR . 'TelegramClient' . DIRECTORY_SEPARATOR . 'User.php');
@@ -28,6 +30,21 @@
     class TelegramClientManager
     {
         /**
+         * @var Managers\TelegramClientManager
+         */
+        private $TelegramClientManager;
+
+        /**
+         * @var mixed
+         */
+        private $TelegramConfiguration;
+
+        /**
+         * @var mixed
+         */
+        private $DatabaseConfiguration;
+
+        /**
          * TelegramClientManager constructor.
          * @throws Exception
          */
@@ -44,5 +61,31 @@
                 $this->DatabaseConfiguration['Name'],
                 $this->DatabaseConfiguration['Port']
             );
+
+            $this->TelegramClientManager = new Managers\TelegramClientManager($this);
+        }
+
+        /**
+         * @return mixed
+         */
+        public function getTelegramConfiguration()
+        {
+            return $this->TelegramConfiguration;
+        }
+
+        /**
+         * @return mixed
+         */
+        public function getDatabaseConfiguration()
+        {
+            return $this->DatabaseConfiguration;
+        }
+
+        /**
+         * @return Managers\TelegramClientManager
+         */
+        public function getTelegramClientManager(): Managers\TelegramClientManager
+        {
+            return $this->TelegramClientManager;
         }
     }
