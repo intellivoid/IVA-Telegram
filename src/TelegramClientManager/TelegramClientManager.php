@@ -28,6 +28,11 @@
         include_once($LocalDirectory . 'ZiProto' . DIRECTORY_SEPARATOR . 'ZiProto.php');
     }
 
+    if(class_exists('msqg\msqg') == false)
+    {
+        include_once($LocalDirectory . 'msqg' . DIRECTORY_SEPARATOR . 'msqg.php');
+    }
+
     if(class_exists('acm\acm') == false)
     {
         include_once($LocalDirectory . 'acm' . DIRECTORY_SEPARATOR . 'acm.php');
