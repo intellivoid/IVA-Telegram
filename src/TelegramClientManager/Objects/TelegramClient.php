@@ -1,10 +1,10 @@
 <?php
 
 
-namespace TelegramClientManager\Objects;
+    namespace TelegramClientManager\Objects;
 
 
-class TelegramClient
-{
+    class TelegramClient
+    {
 
-}
+    }
