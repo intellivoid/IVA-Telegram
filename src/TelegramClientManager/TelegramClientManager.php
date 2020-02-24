@@ -40,6 +40,8 @@
         include_once($LocalDirectory . 'acm' . DIRECTORY_SEPARATOR . 'acm.php');
     }
 
+    include_once($LocalDirectory . 'AutoConfig.php');
+
     /**
      * Class TelegramClientManager
      * @package TelegramClientManager
