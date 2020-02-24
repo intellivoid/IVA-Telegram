@@ -148,7 +148,7 @@
                 'user_id',
                 'last_activity',
                 'created'
-            ], $search_method, $value);
+            ], $search_method, $value, null, null, 1);
 
             $QueryResults = $this->telegramClientManager->database->query($Query);
 
