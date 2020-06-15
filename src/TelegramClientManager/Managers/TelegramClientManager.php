@@ -124,12 +124,20 @@
             switch($search_method)
             {
                 case TelegramClientSearchMethod::byId:
+                case TelegramClientSearchMethod::byAccountId:
                     $search_method = $this->telegramClientManager->database->real_escape_string($search_method);
                     $value = (int)$value;
                     break;
 
+                case TelegramClientSearchMethod::byChatId:
+                case TelegramClientSearchMethod::byUserId:
+                    $search_method = $this->telegramClientManager->database->real_escape_string("public_id");
+                    $value = Hashing::telegramClientPublicID((int)$value, (int)$value);
+                    break;
+
                 case TelegramClientSearchMethod::byPublicId:
-                    $search_method = $this->telegramClientManager->database->real_escape_string($search_method);
+                case TelegramClientSearchMethod::byUsername:
+                    $search_method =$this->telegramClientManager->database->real_escape_string($search_method);
                     $value = $this->telegramClientManager->database->real_escape_string($value);;
                     break;
 
@@ -147,6 +155,7 @@
                 'session_data',
                 'chat_id',
                 'user_id',
+                'username',
                 'last_activity',
                 'created'
             ], $search_method, $value, null, null, 1);
@@ -185,15 +194,22 @@
         {
             switch($search_method)
             {
-                case TelegramClientSearchMethod::byChatId:
-                case TelegramClientSearchMethod::byUserId:
-                    $search_method = $this->telegramClientManager->database->real_escape_string($search_method);
-                    $value = $this->telegramClientManager->database->real_escape_string($value);;
-                    break;
-
+                case TelegramClientSearchMethod::byId:
                 case TelegramClientSearchMethod::byAccountId:
                     $search_method = $this->telegramClientManager->database->real_escape_string($search_method);
-                    $value = (int)$value;;
+                    $value = (int)$value;
+                    break;
+
+                case TelegramClientSearchMethod::byChatId:
+                case TelegramClientSearchMethod::byUserId:
+                    $search_method = $this->telegramClientManager->database->real_escape_string("public_id");
+                    $value = Hashing::telegramClientPublicID((int)$value, (int)$value);
+                    break;
+
+                case TelegramClientSearchMethod::byPublicId:
+                case TelegramClientSearchMethod::byUsername:
+                    $search_method =$this->telegramClientManager->database->real_escape_string($search_method);
+                    $value = $this->telegramClientManager->database->real_escape_string($value);;
                     break;
 
                 default:
@@ -210,6 +226,7 @@
                 'session_data',
                 'chat_id',
                 'user_id',
+                'username',
                 'last_activity',
                 'created'
             ], $search_method, $value);
