@@ -53,6 +53,9 @@
 
             try
             {
+                // Make sure duplicate usernames are not possible
+                $this->fixDuplicateUsername($chat, $user);
+
                 $ExistingClient = $this->getClient(TelegramClientSearchMethod::byPublicId, $PublicID_og);
 
                 $ExistingClient->LastActivityTimestamp = $CurrentTime;
