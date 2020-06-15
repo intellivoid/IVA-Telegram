@@ -5,6 +5,7 @@
 
     use msqg\QueryBuilder;
     use TelegramClientManager\Abstracts\SearchMethods\TelegramClientSearchMethod;
+    use TelegramClientManager\Abstracts\TelegramChatType;
     use TelegramClientManager\Exceptions\DatabaseException;
     use TelegramClientManager\Exceptions\InvalidSearchMethod;
     use TelegramClientManager\Exceptions\TelegramClientNotFoundException;
@@ -277,4 +278,49 @@
                 throw new DatabaseException($Query, $this->telegramClientManager->database->error);
             }
         }
+
+        /**
+         * Registers the client as a user only (private)
+         *
+         * @param User $user
+         * @return TelegramClient
+         * @throws DatabaseException
+         * @throws InvalidSearchMethod
+         * @throws TelegramClientNotFoundException
+         */
+        public function registerUser(User $user): TelegramClient
+        {
+            $ChatObject = new Chat();
+            $ChatObject->ID = $user->ID;
+            $ChatObject->Type = TelegramChatType::Private;
+            $ChatObject->Title = null;
+            $ChatObject->Username = $user->Username;
+            $ChatObject->FirstName = $user->FirstName;
+            $ChatObject->LastName = $user->LastName;
+
+            return $this->registerClient($ChatObject, $user);
+        }
+
+        /**
+         * Registers the client as a chat only (bot based)
+         *
+         * @param Chat $chat
+         * @return TelegramClient
+         * @throws DatabaseException
+         * @throws InvalidSearchMethod
+         * @throws TelegramClientNotFoundException
+         */
+        public function registerChat(Chat $chat): TelegramClient
+        {
+            $UserObject = new User();
+            $UserObject->ID = $chat->ID;
+            $UserObject->FirstName = $chat->Title;
+            $UserObject->LastName = null;
+            $UserObject->LanguageCode = null;
+            $UserObject->IsBot = false;
+            $UserObject->Username = $chat->Username;
+
+            return $this->registerClient($chat, $UserObject);
+        }
+
     }
