@@ -322,5 +322,82 @@
 
             return $this->registerClient($chat, $UserObject);
         }
+        /**
+         * Searches and overwrites old duplicate usernames
+         *
+         * @param Chat $chat
+         * @param User $user
+         * @return bool
+         * @throws DatabaseException
+         * @throws InvalidSearchMethod
+         */
+        public function fixDuplicateUsername(Chat $chat, User $user): bool
+        {
+            if((int)$user->ID == (int)$chat->ID)
+            {
+                $Username = null;
+
+                if($user->Username !== null)
+                {
+                    $Username = $user->Username;
+                }
+
+                if($chat->Username !== null)
+                {
+                    $Username = $chat->Username;
+                }
+
+                if($Username !== null)
+                {
+                    $ExistingClient = $this->getClientByUsername($Username);
+
+                    if($ExistingClient !== null)
+                    {
+                        $DuplicateUsername = false;
+
+                        if($ExistingClient->User->ID == $user->ID)
+                        {
+                            $DuplicateUsername = true;
+                        }
+
+                        if($ExistingClient->Chat->ID == $chat->ID)
+                        {
+                            $DuplicateUsername = true;
+                        }
+
+                        if($DuplicateUsername == true)
+                        {
+                            $ExistingClient->User->Username = null;
+                            $ExistingClient->Chat->Username = null;
+                            $this->updateClient($ExistingClient);
+
+                            return true;
+                        }
+                    }
+                }
+            }
+
+            return false;
+        }
+
+        /**
+         * Returns a telegram client by username returns null if not found
+         *
+         * @param string $username
+         * @return TelegramClient|null
+         * @throws DatabaseException
+         * @throws InvalidSearchMethod
+         */
+        public function getClientByUsername(string $username)
+        {
+            try
+            {
+                return $this->getClient(TelegramClientSearchMethod::byUsername, $username);
+            }
+            catch(TelegramClientNotFoundException $telegramClientNotFoundException)
+            {
+                return null;
+            }
+        }
 
     }
