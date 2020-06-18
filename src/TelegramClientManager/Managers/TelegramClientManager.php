@@ -121,11 +121,9 @@
 
             if($QueryResults == false)
             {
-                $QueryResults->close();
                 throw new DatabaseException($Query, $this->telegramClientManager->getDatabase()->error);
             }
 
-            $QueryResults->close();
             return $this->getClient(TelegramClientSearchMethod::byPublicId, $PublicID_og);
         }
 
@@ -325,12 +323,10 @@
 
             if($QueryResults == true)
             {
-                $QueryResults->close();
                 return true;
             }
             else
             {
-                $QueryResults->close();
                 throw new DatabaseException($Query, $this->telegramClientManager->getDatabase()->error);
             }
         }
