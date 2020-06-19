@@ -205,7 +205,6 @@
 
             if($QueryResults == false)
             {
-                $QueryResults->close();
                 throw new DatabaseException($Query, $this->telegramClientManager->getDatabase()->error);
             }
             else
