@@ -49,14 +49,11 @@
         {
             $CurrentTime = (int)time();
             $PublicID = Hashing::telegramClientPublicID($chat->ID, $user->ID);
-            $PublicID_og = $PublicID;
 
             try
             {
                 // Make sure duplicate usernames are not possible
-                $this->fixDuplicateUsername($chat, $user);
-
-                $ExistingClient = $this->getClient(TelegramClientSearchMethod::byPublicId, $PublicID_og);
+                $ExistingClient = $this->getClient(TelegramClientSearchMethod::byPublicId, $PublicID);
 
                 $ExistingClient->LastActivityTimestamp = $CurrentTime;
                 $ExistingClient->Available = true;
@@ -124,7 +121,7 @@
                 throw new DatabaseException($Query, $this->telegramClientManager->getDatabase()->error);
             }
 
-            return $this->getClient(TelegramClientSearchMethod::byPublicId, $PublicID_og);
+            return $this->getClient(TelegramClientSearchMethod::byPublicId, $PublicID);
         }
 
         /**
@@ -278,11 +275,12 @@
          * Updates an existing Telegram client in the database
          *
          * @param TelegramClient $telegramClient
+         * @param bool $retry_duplication
          * @return bool
          * @throws DatabaseException
          * @throws InvalidSearchMethod
          */
-        public function updateClient(TelegramClient $telegramClient): bool
+        public function updateClient(TelegramClient $telegramClient, bool $retry_duplication=true): bool
         {
             $id = (int)$telegramClient->ID;
             $available = (int)$telegramClient->Available;
@@ -323,6 +321,12 @@
             }
             else
             {
+                if($retry_duplication)
+                {
+                    $this->fixDuplicateUsername($telegramClient->Chat, $telegramClient->User);
+                    return $this->updateClient($telegramClient, false);
+                }
+
                 throw new DatabaseException($Query, $this->telegramClientManager->getDatabase()->error);
             }
         }
