@@ -36,6 +36,28 @@
         }
 
         /**
+         * Full registration command, returns an array of a structure of ("CLIENT", "CHAT" & "USER")
+         *
+         * @param Chat $chat
+         * @param User $user
+         * @param bool $return_public_id
+         * @return array
+         * @throws DatabaseException
+         * @throws InvalidSearchMethod
+         * @throws TelegramClientNotFoundException
+         */
+        public function register(Chat $chat, User $user, bool $return_public_id=false): array
+        {
+            $Results = array();
+
+            $Results['CLIENT'] = $this->registerClient($chat, $user, $return_public_id);
+            $Results['USER'] = $this->registerUser($user, $return_public_id);
+            $Results['CHAT'] = $this->registerChat($chat, $return_public_id);
+
+            return $Results;
+        }
+
+        /**
          * Registers a new Telegram Client into the database
          *
          * @param Chat $chat
@@ -359,13 +381,14 @@
          * Registers the client as a user only (private)
          *
          * @param User $user
-         * @return TelegramClient
+         * @param bool $return_public_id
+         * @return TelegramClient|string
          * @throws DatabaseException
          * @throws InvalidSearchMethod
          * @throws TelegramClientNotFoundException
          * @noinspection PhpUnused
          */
-        public function registerUser(User $user): TelegramClient
+        public function registerUser(User $user, $return_public_id=false)
         {
             $ChatObject = new Chat();
             $ChatObject->ID = $user->ID;
@@ -375,20 +398,21 @@
             $ChatObject->FirstName = $user->FirstName;
             $ChatObject->LastName = $user->LastName;
 
-            return $this->registerClient($ChatObject, $user, false);
+            return $this->registerClient($ChatObject, $user, $return_public_id);
         }
 
         /**
          * Registers the client as a chat only (bot based)
          *
          * @param Chat $chat
-         * @return TelegramClient
+         * @param bool $return_public_id
+         * @return TelegramClient|string
          * @throws DatabaseException
          * @throws InvalidSearchMethod
          * @throws TelegramClientNotFoundException
          * @noinspection PhpUnused
          */
-        public function registerChat(Chat $chat): TelegramClient
+        public function registerChat(Chat $chat, $return_public_id=false)
         {
             $UserObject = new User();
             $UserObject->ID = $chat->ID;
@@ -398,7 +422,7 @@
             $UserObject->IsBot = false;
             $UserObject->Username = $chat->Username;
 
-            return $this->registerClient($chat, $UserObject, false);
+            return $this->registerClient($chat, $UserObject, $return_public_id);
         }
         /**
          * Searches and overwrites old duplicate usernames
