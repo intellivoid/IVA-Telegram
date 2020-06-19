@@ -45,6 +45,7 @@
          * @throws DatabaseException
          * @throws InvalidSearchMethod
          * @throws TelegramClientNotFoundException
+         * @noinspection PhpUnused
          */
         public function register(Chat $chat, User $user, bool $return_public_id=false): array
         {
