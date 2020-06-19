@@ -55,12 +55,26 @@
                 // Make sure duplicate usernames are not possible
                 $ExistingClient = $this->getClient(TelegramClientSearchMethod::byPublicId, $PublicID);
 
-                $ExistingClient->LastActivityTimestamp = $CurrentTime;
-                $ExistingClient->Available = true;
-                $ExistingClient->User = $user;
-                $ExistingClient->Chat = $chat;
+                $UpdateRequired = false;
 
-                $this->updateClient($ExistingClient);
+                if($chat->getUniqueHash() !== $ExistingClient->Chat->getUniqueHash())
+                {
+                    $ExistingClient->Chat = $chat;
+                    $UpdateRequired = true;
+                }
+
+                if($user->getUniqueHash() !== $ExistingClient->User->getUniqueHash())
+                {
+                    $ExistingClient->User = $user;
+                    $UpdateRequired = true;
+                }
+
+                if($UpdateRequired)
+                {
+                    $ExistingClient->LastActivityTimestamp = $CurrentTime;
+                    $ExistingClient->Available = true;
+                    $this->updateClient($ExistingClient);
+                }
 
                 return $ExistingClient;
             }

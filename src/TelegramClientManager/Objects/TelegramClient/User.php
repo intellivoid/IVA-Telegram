@@ -59,6 +59,7 @@
          *
          * @return string
          * @noinspection DuplicatedCode
+         * @noinspection PhpUnused
          */
         public function getUniqueHash(): string
         {
