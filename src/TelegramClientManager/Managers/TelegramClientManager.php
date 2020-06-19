@@ -40,12 +40,13 @@
          *
          * @param Chat $chat
          * @param User $user
-         * @return TelegramClient
+         * @param bool $return_public_id
+         * @return TelegramClient|string
          * @throws DatabaseException
          * @throws InvalidSearchMethod
          * @throws TelegramClientNotFoundException
          */
-        public function registerClient(Chat $chat, User $user): TelegramClient
+        public function registerClient(Chat $chat, User $user, bool $return_public_id=false)
         {
             $CurrentTime = (int)time();
             $PublicID = Hashing::telegramClientPublicID($chat->ID, $user->ID);
@@ -74,6 +75,11 @@
                     $ExistingClient->LastActivityTimestamp = $CurrentTime;
                     $ExistingClient->Available = true;
                     $this->updateClient($ExistingClient);
+                }
+
+                if($return_public_id)
+                {
+                    return $PublicID;
                 }
 
                 return $ExistingClient;
@@ -133,6 +139,11 @@
             if($QueryResults == false)
             {
                 throw new DatabaseException($Query, $this->telegramClientManager->getDatabase()->error);
+            }
+
+            if($return_public_id)
+            {
+                return $PublicID;
             }
 
             return $this->getClient(TelegramClientSearchMethod::byPublicId, $PublicID);
@@ -365,7 +376,7 @@
             $ChatObject->FirstName = $user->FirstName;
             $ChatObject->LastName = $user->LastName;
 
-            return $this->registerClient($ChatObject, $user);
+            return $this->registerClient($ChatObject, $user, false);
         }
 
         /**
@@ -388,7 +399,7 @@
             $UserObject->IsBot = false;
             $UserObject->Username = $chat->Username;
 
-            return $this->registerClient($chat, $UserObject);
+            return $this->registerClient($chat, $UserObject, false);
         }
         /**
          * Searches and overwrites old duplicate usernames
