@@ -459,26 +459,11 @@
 
                     if($ExistingClient !== null)
                     {
-                        $DuplicateUsername = false;
+                        $ExistingClient->User->Username = null;
+                        $ExistingClient->Chat->Username = null;
+                        $this->updateClient($ExistingClient);
 
-                        if($ExistingClient->User->ID == $user->ID)
-                        {
-                            $DuplicateUsername = true;
-                        }
-
-                        if($ExistingClient->Chat->ID == $chat->ID)
-                        {
-                            $DuplicateUsername = true;
-                        }
-
-                        if($DuplicateUsername == true)
-                        {
-                            $ExistingClient->User->Username = null;
-                            $ExistingClient->Chat->Username = null;
-                            $this->updateClient($ExistingClient);
-
-                            return true;
-                        }
+                        return true;
                     }
                 }
             }
