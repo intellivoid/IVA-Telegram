@@ -373,7 +373,6 @@
                 if($retry_duplication)
                 {
                     $this->fixDuplicateUsername($telegramClient->Chat, $telegramClient->User);
-                    $telegramClient = $this->getClient(TelegramClientSearchMethod::byPublicId, $telegramClient->PublicID);
                     return $this->updateClient($telegramClient, false);
                 }
 
