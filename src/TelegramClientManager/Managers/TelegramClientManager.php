@@ -83,19 +83,19 @@
 
                 if($chat->getUniqueHash() !== $ExistingClient->Chat->getUniqueHash())
                 {
-                    $ExistingClient->Chat = $chat;
                     $UpdateRequired = true;
                 }
 
                 if($user->getUniqueHash() !== $ExistingClient->User->getUniqueHash())
                 {
-                    $ExistingClient->User = $user;
                     $UpdateRequired = true;
                 }
 
                 if($UpdateRequired)
                 {
                     $ExistingClient = $this->getClient(TelegramClientSearchMethod::byPublicId, $ExistingClient->PublicID);
+                    $ExistingClient->User = $user;
+                    $ExistingClient->Chat = $chat;
                     $ExistingClient->LastActivityTimestamp = $CurrentTime;
                     $ExistingClient->Available = true;
                     $this->updateClient($ExistingClient);
