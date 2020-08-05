@@ -9,7 +9,7 @@
     use ppm\ppm;
 
     $LocalDirectory = __DIR__ . DIRECTORY_SEPARATOR;
-    
+
     if(defined("PPM") == false)
     {
         include_once($LocalDirectory . 'Abstracts' . DIRECTORY_SEPARATOR . 'SearchMethods' . DIRECTORY_SEPARATOR . 'TelegramClientSearchMethod.php');
