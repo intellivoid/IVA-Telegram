@@ -325,12 +325,13 @@
          *
          * @param TelegramClient $telegramClient
          * @param bool $retry_duplication
+         * @param bool $ignore_username
          * @return bool
          * @throws DatabaseException
          * @throws InvalidSearchMethod
          * @throws TelegramClientNotFoundException
          */
-        public function updateClient(TelegramClient $telegramClient, bool $retry_duplication=true): bool
+        public function updateClient(TelegramClient $telegramClient, bool $retry_duplication=true, bool $ignore_username=false): bool
         {
             $id = (int)$telegramClient->ID;
             $available = (int)$telegramClient->Available;
@@ -346,13 +347,16 @@
             $username = null;
             $last_activity = (int)time();
 
-            if($telegramClient->getUsername() !== null)
+            if($ignore_username == false)
             {
-                $username =$this->telegramClientManager->getDatabase()->real_escape_string($telegramClient->getUsername());
-                $this->fixDuplicateUsername($telegramClient->Chat, $telegramClient->User);
+                if($telegramClient->getUsername() !== null)
+                {
+                    $username = $this->telegramClientManager->getDatabase()->real_escape_string($telegramClient->getUsername());
+                    $this->fixDuplicateUsername($telegramClient->Chat, $telegramClient->User);
+                }
             }
 
-            $Query = QueryBuilder::update('telegram_clients', array(
+            $query_array = array(
                 'available' => $available,
                 'account_id' => $account_id,
                 'user' => $user,
@@ -360,9 +364,15 @@
                 'session_data' => $session_data,
                 'chat_id' => $chat_id,
                 'user_id' => $user_id,
-                'username' => $username,
                 'last_activity' => $last_activity
-            ), 'id', $id);
+            );
+
+            if($ignore_username == false)
+            {
+                $query_array["username"] = $username;
+            }
+
+            $Query = QueryBuilder::update('telegram_clients', $query_array, 'id', $id);
             $QueryResults = $this->telegramClientManager->getDatabase()->query($Query);
 
             if($QueryResults == true)
@@ -371,10 +381,13 @@
             }
             else
             {
-                if($retry_duplication)
+                if($ignore_username == false)
                 {
-                    $this->fixDuplicateUsername($telegramClient->Chat, $telegramClient->User);
-                    return $this->updateClient($telegramClient, false);
+                    if($retry_duplication)
+                    {
+                        $this->fixDuplicateUsername($telegramClient->Chat, $telegramClient->User);
+                        return $this->updateClient($telegramClient, false);
+                    }
                 }
 
                 throw new DatabaseException($Query, $this->telegramClientManager->getDatabase()->error);
