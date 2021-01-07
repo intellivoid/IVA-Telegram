@@ -94,14 +94,7 @@
         {
             $this->acm = new acm(__DIR__, 'Telegram Client Manager');
             $this->DatabaseConfiguration = $this->acm->getConfiguration('Database');
-
-            $this->database = new mysqli(
-                $this->DatabaseConfiguration['Host'],
-                $this->DatabaseConfiguration['Username'],
-                $this->DatabaseConfiguration['Password'],
-                $this->DatabaseConfiguration['Name'],
-                $this->DatabaseConfiguration['Port']
-            );
+            $this->database = null;
 
             $this->TelegramClientManager = new Managers\TelegramClientManager($this);
         }
@@ -135,6 +128,39 @@
          */
         public function getDatabase(): mysqli
         {
+            if($this->database == null)
+            {
+                $this->connectDatabase();
+            }
+
             return $this->database;
+        }
+
+        /**
+         * Closes the current database connection
+         */
+        public function disconnectDatabase()
+        {
+            $this->database->close();
+            $this->database = null;
+        }
+
+        /**
+         * Creates a new database connection
+         */
+        public function connectDatabase()
+        {
+            if($this->database !== null)
+            {
+                $this->disconnectDatabase();
+            }
+
+            $this->database = new mysqli(
+                $this->DatabaseConfiguration['Host'],
+                $this->DatabaseConfiguration['Username'],
+                $this->DatabaseConfiguration['Password'],
+                $this->DatabaseConfiguration['Name'],
+                $this->DatabaseConfiguration['Port']
+            );
         }
     }
