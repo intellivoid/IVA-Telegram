@@ -9,7 +9,7 @@
     use ppm\ppm;
 
     $LocalDirectory = __DIR__ . DIRECTORY_SEPARATOR;
-    
+
     include_once($LocalDirectory . 'AutoConfig.php');
 
     /**
