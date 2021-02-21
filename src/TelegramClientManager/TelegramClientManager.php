@@ -9,50 +9,7 @@
     use ppm\ppm;
 
     $LocalDirectory = __DIR__ . DIRECTORY_SEPARATOR;
-
-    if(defined("PPM") == false)
-    {
-        include_once($LocalDirectory . 'Abstracts' . DIRECTORY_SEPARATOR . 'SearchMethods' . DIRECTORY_SEPARATOR . 'TelegramClientSearchMethod.php');
-        include_once($LocalDirectory . 'Abstracts' . DIRECTORY_SEPARATOR . 'TelegramChatType.php');
-
-        include_once($LocalDirectory . 'Exceptions' . DIRECTORY_SEPARATOR . 'DatabaseException.php');
-        include_once($LocalDirectory . 'Exceptions' . DIRECTORY_SEPARATOR . 'InvalidSearchMethod.php');
-        include_once($LocalDirectory . 'Exceptions' . DIRECTORY_SEPARATOR . 'TelegramClientNotFoundException.php');
-
-        include_once($LocalDirectory . 'Managers' . DIRECTORY_SEPARATOR . 'TelegramClientManager.php');
-
-        include_once($LocalDirectory . 'Objects' . DIRECTORY_SEPARATOR . 'TelegramClient' . DIRECTORY_SEPARATOR . 'Chat.php');
-        include_once($LocalDirectory . 'Objects' . DIRECTORY_SEPARATOR . 'TelegramClient' . DIRECTORY_SEPARATOR . 'SessionData.php');
-        include_once($LocalDirectory . 'Objects' . DIRECTORY_SEPARATOR . 'TelegramClient' . DIRECTORY_SEPARATOR . 'User.php');
-        include_once($LocalDirectory . 'Objects' . DIRECTORY_SEPARATOR . 'TelegramClient.php');
-
-        include_once($LocalDirectory . 'Utilities' . DIRECTORY_SEPARATOR . 'Hashing.php');
-
-        if(class_exists('ZiProto\ZiProto') == false)
-        {
-            /** @noinspection PhpIncludeInspection */
-            include_once($LocalDirectory . 'ZiProto' . DIRECTORY_SEPARATOR . 'ZiProto.php');
-        }
-
-        if(class_exists('msqg\msqg') == false)
-        {
-            /** @noinspection PhpIncludeInspection */
-            include_once($LocalDirectory . 'msqg' . DIRECTORY_SEPARATOR . 'msqg.php');
-        }
-
-        if(class_exists('acm\acm') == false)
-        {
-            /** @noinspection PhpIncludeInspection */
-            include_once($LocalDirectory . 'acm' . DIRECTORY_SEPARATOR . 'acm.php');
-        }
-    }
-    else
-    {
-        ppm::import("net.intellivoid.ziproto");
-        ppm::import("net.intellivoid.msqg");
-        ppm::import("net.intellivoid.acm");
-    }
-
+    
     include_once($LocalDirectory . 'AutoConfig.php');
 
     /**
