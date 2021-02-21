@@ -2,7 +2,7 @@
     "package": {
         "package_name": "net.intellivoid.telegram_client_manager",
         "name": "Telegram Client Manager",
-        "version": "2.0.0.5",
+        "version": "2.0.0.6",
         "author": "Zi Xing Narrakas",
         "organization": "Intellivoid",
         "description": "Manages Telegram Clients in a centralized database",

@@ -334,7 +334,7 @@
         {
             $id = (int)$telegramClient->ID;
             $available = (int)$telegramClient->Available;
-            $account_id = (int)$telegramClient->AccountID;
+            $account_id = $telegramClient->AccountID;
             $user = ZiProto::encode($telegramClient->User->toArray());
             $user = $this->telegramClientManager->getDatabase()->real_escape_string($user);
             $chat = ZiProto::encode($telegramClient->Chat->toArray());

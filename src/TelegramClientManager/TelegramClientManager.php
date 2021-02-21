@@ -127,38 +127,6 @@
          */
         public function applyAccountIdPatch()
         {
-            print("Loading query ..." . PHP_EOL);
-            $Query = QueryBuilder::select("telegram_clients", ["id"], "account_id", 0);
-            $QueryResults = $this->getDatabase()->query($Query);
 
-            if($QueryResults == false)
-            {
-                print("Query Failed" . PHP_EOL);
-                exit(0);
-            }
-
-            print("Query success, loading results ..." . PHP_EOL);
-            $ResultsArray = [];
-
-            while($Row = $QueryResults->fetch_assoc())
-            {
-                $ResultsArray[] = $Row;
-            }
-
-            print("Processing results" . PHP_EOL);
-            foreach($ResultsArray as $item)
-            {
-                print("Updating row " . $item["id"] . " ... ");
-                $Query = QueryBuilder::update("telegram_clients", ["account_id" => null], "id", $item["id"]);
-                $QueryResults = $this->getDatabase()->query($Query);
-                if($QueryResults == false)
-                {
-                    print("Failed" . PHP_EOL);
-                }
-                else
-                {
-                    print("Success" . PHP_EOL);
-                }
-            }
         }
     }
