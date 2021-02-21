@@ -36,9 +36,8 @@
 
         /**
          * The Account ID that's associated with this client
-         * 0 Means none.
          *
-         * @var int
+         * @var int|null
          */
         public $AccountID;
 
@@ -185,7 +184,7 @@
 
             if(isset($data['account_id']))
             {
-                $TelegramClientObject->AccountID = (int)$data['account_id'];
+                $TelegramClientObject->AccountID = $data['account_id'];
             }
 
             if(isset($data['user']))

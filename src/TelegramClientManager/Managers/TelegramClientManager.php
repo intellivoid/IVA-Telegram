@@ -116,7 +116,6 @@
 
             $PublicID = $this->telegramClientManager->getDatabase()->real_escape_string($PublicID);
             $Available = (int)true;
-            $AccountID = 0;
             $User = ZiProto::encode($user->toArray());
             $User = $this->telegramClientManager->getDatabase()->real_escape_string($User);
             $Chat = ZiProto::encode($chat->toArray());
@@ -146,7 +145,7 @@
             $Query = QueryBuilder::insert_into('telegram_clients', array(
                     'public_id' => $PublicID,
                     'available' => $Available,
-                    'account_id' => $AccountID,
+                    'account_id' => null,
                     'user' => $User,
                     'chat' => $Chat,
                     'session_data' => $SessionData,
