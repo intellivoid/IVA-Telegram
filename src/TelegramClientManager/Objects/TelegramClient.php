@@ -184,7 +184,14 @@
 
             if(isset($data['account_id']))
             {
-                $TelegramClientObject->AccountID = $data['account_id'];
+                if($data["account_id"] == 0)
+                {
+                    $TelegramClientObject->AccountID = null;
+                }
+                else
+                {
+                    $TelegramClientObject->AccountID = $data['account_id'];
+                }
             }
 
             if(isset($data['user']))
