@@ -334,7 +334,11 @@
         {
             $id = (int)$telegramClient->ID;
             $available = (int)$telegramClient->Available;
-            $account_id = $telegramClient->AccountID;
+            $account_id = null;
+            if($telegramClient->AccountID !== null)
+            {
+                $account_id = $telegramClient->AccountID;
+            }
             $user = ZiProto::encode($telegramClient->User->toArray());
             $user = $this->telegramClientManager->getDatabase()->real_escape_string($user);
             $chat = ZiProto::encode($telegramClient->Chat->toArray());
@@ -372,6 +376,7 @@
             }
 
             $Query = QueryBuilder::update('telegram_clients', $query_array, 'id', $id);
+            $Query = str_ireplace(", account_id='',", ", account_id=NULL,", $Query);
             $QueryResults = $this->telegramClientManager->getDatabase()->query($Query);
 
             if($QueryResults == true)
