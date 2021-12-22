@@ -11,13 +11,13 @@
             {
                 "package": "net.intellivoid.ziproto",
                 "version": "latest",
-                "source": "default@github/intellivoid/msqg",
+                "source": "default@github/intellivoid/ZiProto",
                 "required": true
             },
             {
                 "package": "net.intellivoid.msqg",
                 "version": "latest",
-                "source": "default@github/intellivoid/ziproto",
+                "source": "default@github/intellivoid/msqg",
                 "required": true
             },
             {
