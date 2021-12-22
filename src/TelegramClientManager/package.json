@@ -8,9 +8,24 @@
         "description": "Manages Telegram Clients in a centralized database",
         "url": "https://github.com/intellivoid/IVA-Telegram",
         "dependencies": [
-            {"package": "net.intellivoid.ziproto", "version": "latest", "required":  true},
-            {"package": "net.intellivoid.msqg", "version": "latest", "required":  true},
-            {"package": "net.intellivoid.acm", "version": "latest", "required":  true}
+            {
+                "package": "net.intellivoid.ziproto",
+                "version": "latest",
+                "source": "default@github/intellivoid/msqg",
+                "required": true
+            },
+            {
+                "package": "net.intellivoid.msqg",
+                "version": "latest",
+                "source": "default@github/intellivoid/ziproto",
+                "required": true
+            },
+            {
+                "package": "net.intellivoid.acm",
+                "version": "latest",
+                "source": "default@github/intellivoid/acm",
+                "required": true
+            }
         ],
         "configuration": {
             "autoload_method": "generated_spl",
@@ -22,15 +37,15 @@
     "components": [
         {
             "required": true,
-            "file": "Abstracts/SearchMethods/TelegramClientSearchMethod.php"
-        },
-        {
-            "required": true,
             "file": "Abstracts/TelegramChatType.php"
         },
         {
             "required": true,
-            "file": "AutoConfig.php"
+            "file": "Abstracts/SearchMethods/TelegramClientSearchMethod.php"
+        },
+        {
+            "required": true,
+            "file": "TelegramClientManager.php"
         },
         {
             "required": true,
@@ -38,23 +53,27 @@
         },
         {
             "required": true,
-            "file": "Exceptions/InvalidSearchMethod.php"
-        },
-        {
-            "required": true,
             "file": "Exceptions/TelegramClientNotFoundException.php"
         },
         {
             "required": true,
-            "file": "Managers/TelegramClientManager.php"
+            "file": "Exceptions/InvalidSearchMethod.php"
         },
         {
             "required": true,
-            "file": "Objects/TelegramClient/Chat.php"
+            "file": "Utilities/Hashing.php"
+        },
+        {
+            "required": true,
+            "file": "AutoConfig.php"
         },
         {
             "required": true,
             "file": "Objects/TelegramClient/SessionData.php"
+        },
+        {
+            "required": true,
+            "file": "Objects/TelegramClient/Chat.php"
         },
         {
             "required": true,
@@ -66,15 +85,12 @@
         },
         {
             "required": true,
-            "file": "TelegramClientManager.php"
-        },
-        {
-            "required": true,
-            "file": "Utilities/Hashing.php"
+            "file": "Managers/TelegramClientManager.php"
         }
     ],
     "files": [
-        "configuration.ini",
-        "telegram_client_manager.json"
+        "telegram_client_manager.json",
+        "package.json",
+        "configuration.ini"
     ]
 }
