@@ -22,7 +22,7 @@
         /**
          * Type of chat, can be either "private", "group", "supergroup" or "channel"
          *
-         * @var TelegramChatType
+         * @var TelegramChatType|string
          */
         public $Type;
 
@@ -130,6 +130,17 @@
                 'first_name' => $this->FirstName,
                 'last_name' => $this->LastName
             );
+        }
+
+        /**
+         * Constructs object from a standard object
+         *
+         * @param \Longman\TelegramBot\Entities\Chat $chat
+         * @return Chat
+         */
+        public static function fromChat(\Longman\TelegramBot\Entities\Chat $chat)
+        {
+            return self::fromArray($chat->getRawData());
         }
 
         /**

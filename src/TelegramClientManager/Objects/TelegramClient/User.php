@@ -129,6 +129,17 @@
         }
 
         /**
+         * Constructs object from a standard user object
+         *
+         * @param \Longman\TelegramBot\Entities\User $user
+         * @return User
+         */
+        public static function fromUser(\Longman\TelegramBot\Entities\User $user)
+        {
+            return self::fromArray($user->getRawData());
+        }
+
+        /**
          * Returns object from array structure
          *
          * @param array $data
