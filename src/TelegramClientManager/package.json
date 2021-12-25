@@ -61,11 +61,11 @@
         },
         {
             "required": true,
-            "file": "Utilities/Hashing.php"
+            "file": "Utilities/Helper.php"
         },
         {
             "required": true,
-            "file": "AutoConfig.php"
+            "file": "Utilities/Hashing.php"
         },
         {
             "required": true,
@@ -85,12 +85,14 @@
         },
         {
             "required": true,
+            "file": "Objects/DetectedClients.php"
+        },
+        {
+            "required": true,
             "file": "Managers/TelegramClientManager.php"
         }
     ],
     "files": [
-        "telegram_client_manager.json",
-        "package.json",
-        "configuration.ini"
+        "package.json"
     ]
 }
