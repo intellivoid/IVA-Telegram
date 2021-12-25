@@ -25,6 +25,12 @@
                 "version": "latest",
                 "source": "default@github/intellivoid/acm2",
                 "required": true
+            },
+            {
+                "package": "net.intellivoid.tdlib",
+                "version": "latest",
+                "source": "default@github/intellivoid/tdlib",
+                "required": true
             }
         ],
         "configuration": {
