@@ -1,17 +1,13 @@
 <?php
 
+    /** @noinspection PhpMissingFieldTypeInspection */
 
     namespace TelegramClientManager;
 
-    use acm\acm;
+    use acm2\acm2;
+    use acm2\Objects\Schema;
     use Exception;
-    use msqg\QueryBuilder;
     use mysqli;
-    use ppm\ppm;
-
-    $LocalDirectory = __DIR__ . DIRECTORY_SEPARATOR;
-
-    include_once($LocalDirectory . 'AutoConfig.php');
 
     /**
      * Class TelegramClientManager
@@ -27,11 +23,6 @@
         /**
          * @var mixed
          */
-        private $TelegramConfiguration;
-
-        /**
-         * @var mixed
-         */
         private $DatabaseConfiguration;
 
         /**
@@ -40,7 +31,7 @@
         private $database;
 
         /**
-         * @var acm
+         * @var acm2
          */
         private $acm;
 
@@ -50,27 +41,25 @@
          */
         public function __construct()
         {
-            $this->acm = new acm(__DIR__, 'Telegram Client Manager');
+            $this->acm = new acm2('Telegram Client Manager');
+
+            // Database Schema Configuration
+            $DatabaseSchema = new Schema();
+            $DatabaseSchema->setName('Database');
+            $DatabaseSchema->setDefinition('Host', 'localhost');
+            $DatabaseSchema->setDefinition('Port', '3306');
+            $DatabaseSchema->setDefinition('Username', 'root');
+            $DatabaseSchema->setDefinition('Password', '');
+            $DatabaseSchema->setDefinition('Name', 'intellivoid');
+            $this->acm->defineSchema($DatabaseSchema);
+
+            // Update the configuration
+            $this->acm->updateConfiguration();
+
             $this->DatabaseConfiguration = $this->acm->getConfiguration('Database');
             $this->database = null;
 
             $this->TelegramClientManager = new Managers\TelegramClientManager($this);
-        }
-
-        /**
-         * @return mixed
-         */
-        public function getTelegramConfiguration()
-        {
-            return $this->TelegramConfiguration;
-        }
-
-        /**
-         * @return mixed
-         */
-        public function getDatabaseConfiguration()
-        {
-            return $this->DatabaseConfiguration;
         }
 
         /**
@@ -120,13 +109,5 @@
                 $this->DatabaseConfiguration['Name'],
                 $this->DatabaseConfiguration['Port']
             );
-        }
-
-        /**
-         * Updates all old records
-         */
-        public function applyAccountIdPatch()
-        {
-
         }
     }

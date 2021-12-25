@@ -21,9 +21,9 @@
                 "required": true
             },
             {
-                "package": "net.intellivoid.acm",
+                "package": "net.intellivoid.acm2",
                 "version": "latest",
-                "source": "default@github/intellivoid/acm",
+                "source": "default@github/intellivoid/acm2",
                 "required": true
             }
         ],
