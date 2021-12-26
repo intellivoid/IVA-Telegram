@@ -287,6 +287,11 @@
          */
         public function findForwardedTarget(bool $reply_only=true)
         {
+            if($this->ReplyToSenderChatClient !== null)
+            {
+                return $this->SenderChatClient;
+            }
+
             if($this->ReplyToUserForwardUserClient !== null)
             {
                 return $this->ReplyToUserForwardUserClient;
